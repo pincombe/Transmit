@@ -44,6 +44,4 @@ class Client
         return $response;
 	}
 
-
-
 }
