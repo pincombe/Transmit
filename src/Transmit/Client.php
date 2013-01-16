@@ -19,18 +19,15 @@ class Client
 
 	public function get($uri)
 	{
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->hostname . $uri);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(sprintf('Key: %s', $this->key)));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, self::TIMEOUT);
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-        return $response;
+		return $this->request($uri);
 	}
 
-	public function post($uri, $data)
+	public function post($uri, $post_data)
+	{
+		return $this->request($uri, 'POST', $post_data);
+	}
+
+	private function request($uri, $type = 'GET', $post_data = '')
 	{
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->hostname . $uri);
@@ -38,8 +35,10 @@ class Client
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, self::TIMEOUT);
 
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        if ($type == 'POST') {
+	        curl_setopt($ch, CURLOPT_POST, 1);
+	        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+	    }
 
         $response = curl_exec($ch);
         curl_close($ch);
