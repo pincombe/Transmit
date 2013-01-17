@@ -17,27 +17,27 @@ class Client
 		$this->key = $key;
 	}
 
-	public function get($uri)
+	protected function _get($uri)
 	{
-		return $this->request($uri);
+		return $this->_request($uri);
 	}
 
-	public function post($uri, $post_data)
+	protected function _post($uri, $post_data)
 	{
-		return $this->request($uri, 'POST', $post_data);
+		return $this->_request($uri, 'POST', $post_data);
 	}
 
-	public function put($uri, $post_data)
+	protected function _put($uri, $post_data)
 	{
-		return $this->request($uri, 'PUT', $post_data);
+		return $this->_request($uri, 'PUT', $post_data);
 	}
 
-	public function delete($uri)
+	protected function _delete($uri)
 	{
-		return $this->request($uri, 'DELETE');
+		return $this->_request($uri, 'DELETE');
 	}
 
-	private function request($uri, $type = 'GET', $post_data = '')
+	private function _request($uri, $type = 'GET', $post_data = '')
 	{
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->hostname . $uri);
