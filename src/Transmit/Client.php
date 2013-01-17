@@ -31,14 +31,15 @@ class Client
 	{
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->hostname . $uri);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(sprintf('Key: %s', $this->key)));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, self::TIMEOUT);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         if ($type == 'POST') {
-	        curl_setopt($ch, CURLOPT_POST, 1);
+	        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 	        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
 	    }
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', sprintf('Key: %s', $this->key)));
+        curl_setopt($ch, CURLOPT_TIMEOUT, self::TIMEOUT);
 
         $response = curl_exec($ch);
         curl_close($ch);
