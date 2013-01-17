@@ -27,14 +27,24 @@ class Client
 		return $this->request($uri, 'POST', $post_data);
 	}
 
+	public function put($uri, $post_data)
+	{
+		return $this->request($uri, 'PUT', $post_data);
+	}
+
+	public function delete($uri)
+	{
+		return $this->request($uri, 'DELETE');
+	}
+
 	private function request($uri, $type = 'GET', $post_data = '')
 	{
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->hostname . $uri);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $type);
 
-        if ($type == 'POST') {
-	        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        if (!empty($post_data)) {
 	        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
 	    }
 
