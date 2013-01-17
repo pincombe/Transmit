@@ -52,7 +52,16 @@ class Client
         curl_setopt($ch, CURLOPT_TIMEOUT, self::TIMEOUT);
 
         $response = curl_exec($ch);
+
+        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if ($http_status == 404) {
+	        throw new ClientException('Unable to fulfil request');
+        }
+
         curl_close($ch);
+
+        //$response = json_decode($response);
         return $response;
 	}
 
